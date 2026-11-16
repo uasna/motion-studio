@@ -5,3 +5,11 @@ dist
 
 # Ignore the output video from Git but not videos you import into src/.
 out
+
+build
+# Local diagnostic and test render
+/diagnostico.txt
+/forge-engine-test.mp4
+
+# Local source backups
+/src/projects/**/*.backup.tsx
