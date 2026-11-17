@@ -27,18 +27,23 @@ Status: COMPLETE
 - Camera-aware masking.
 
 ## Phase 2C — Temporal orchestration
-Status: PLANNED
+Status: COMPLETE (approved by Technical Direction at commit `ac8996d`; branch `phase-2c-review`, not yet merged into `main`)
 
 - Pure timing planner.
 - Sequential and parallel blocks.
 - Gaps and overlaps.
-- Staggered animations.
-- Animation delays.
-- Timeline span wrappers.
-- Camera and object synchronization.
+- Staggered animations (`stagger` and `<Stagger>`).
+- Animation delays (non-negative integer frames).
+- Timeline span wrappers (`<At>`).
+- Camera and object synchronization (`cameraMoves`).
+- Orchestration demonstration in landscape, portrait and square.
+
+Known pending tests:
+- `<Stagger persist={false}>`.
+- `<Camera>` inside an `<At>` with a time reference different from the plan's origin.
 
 ## Phase 3 — Advanced visual systems
-Status: NOT STARTED
+Status: NOT STARTED — NOT AUTHORIZED
 
 Potential scope:
 - More advanced vector operations.
@@ -47,7 +52,7 @@ Potential scope:
 - Reusable visual effects.
 - More sophisticated object composition.
 
-Do not implement until Phase 2C is completed and explicitly approved.
+Phase 2C is complete and approved, but Phase 3 has not been explicitly authorized. Do not start it until it is.
 
 ## Phase 4 — Production systems
 Status: NOT STARTED
