@@ -218,11 +218,56 @@ check("delay: es aditivo con el desplazamiento de un contenedor (At)", () => {
     near(viaDelay, direct, `x@${absolute}`);
   }
 });
-check("delay: acepta valores negativos y fraccionarios; rechaza no finitos", () => {
-  near(evaluateAnimation(SLIDE, 0, { delay: -15 }).x as number, 150, "negativo adelanta");
-  near(evaluateAnimation(SLIDE, 15, { delay: 7.5 }).x as number, 75, "fraccionario");
-  throws(() => evaluateAnimation(SLIDE, 0, { delay: Number.NaN }), "finito");
-  throws(() => evaluateAnimation(SLIDE, 0, { delay: Infinity }), "finito");
+const DELAY_MESSAGE = "El delay de una animación debe ser un número entero de frames no negativo";
+
+check("delay: 0 explícito, por omisión y undefined son equivalentes (valor predeterminado)", () => {
+  const reference = JSON.stringify(evaluateAnimation(SLIDE, 12));
+  for (const options of [undefined, {}, { delay: 0 }, { delay: undefined }]) {
+    if (JSON.stringify(evaluateAnimation(SLIDE, 12, options)) !== reference) {
+      throw new Error(`distinto de la Fase 2A con opciones ${JSON.stringify(options)}`);
+    }
+  }
+  near(evaluateAnimation(SLIDE, 15, { delay: 0 }).x as number, 150, "x@15");
+});
+check("delay: entero positivo desplaza la animación", () => {
+  near(evaluateAnimation(SLIDE, 25, { delay: 10 }).x as number, 150, "x@25 con delay 10");
+  near(evaluateAnimation(SLIDE, 1000, { delay: 1000 }).x as number, 0, "delay grande");
+});
+check("delay: -0 se acepta como 0", () => {
+  near(evaluateAnimation(SLIDE, 15, { delay: -0 }).x as number, 150, "x@15");
+});
+check("delay: rechaza negativos", () => {
+  for (const delay of [-1, -15, -1000]) {
+    throws(() => evaluateAnimation(SLIDE, 0, { delay }), DELAY_MESSAGE);
+  }
+  throws(() => evaluateAnimation(SLIDE, 0, { delay: -1 }), "(recibido -1)");
+});
+check("delay: rechaza fraccionarios", () => {
+  for (const delay of [0.5, 7.5, 1e-9, 2.0000001]) {
+    throws(() => evaluateAnimation(SLIDE, 0, { delay }), DELAY_MESSAGE);
+  }
+  throws(() => evaluateAnimation(SLIDE, 0, { delay: 7.5 }), "(recibido 7.5)");
+});
+check("delay: rechaza NaN, Infinity y -Infinity", () => {
+  throws(() => evaluateAnimation(SLIDE, 0, { delay: Number.NaN }), DELAY_MESSAGE);
+  throws(() => evaluateAnimation(SLIDE, 0, { delay: Number.NaN }), "(recibido NaN)");
+  throws(() => evaluateAnimation(SLIDE, 0, { delay: Infinity }), "(recibido Infinity)");
+  throws(() => evaluateAnimation(SLIDE, 0, { delay: -Infinity }), "(recibido -Infinity)");
+  throws(() => evaluateAnimation(SLIDE, 0, { delay: Infinity }), DELAY_MESSAGE);
+});
+check("delay: la validación no depende del spec ni del frame", () => {
+  throws(() => evaluateAnimation({}, 0, { delay: -1 }), DELAY_MESSAGE);
+  throws(() => evaluateAnimation({}, 500, { delay: 0.5 }), DELAY_MESSAGE);
+  throws(() => evaluateAnimation(SLIDE, -20, { delay: Number.NaN }), DELAY_MESSAGE);
+});
+check("delay: es un RangeError, igual que el resto de validaciones de frames", () => {
+  try {
+    evaluateAnimation(SLIDE, 0, { delay: -1 });
+  } catch (error) {
+    if (!(error instanceof RangeError)) throw new Error("no es un RangeError");
+    return;
+  }
+  throw new Error("no lanzó");
 });
 
 /* ============================ cameraMoves ============================ */

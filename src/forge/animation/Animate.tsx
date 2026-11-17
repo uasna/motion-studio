@@ -4,7 +4,7 @@ import { useAnimation, type AnimationSpec } from "./evaluate";
 
 export type AnimateProps = GroupProps & {
   readonly animation: AnimationSpec;
-  /** Retraso aditivo en frames (ver `AnimationOptions.delay`). Por defecto, 0. */
+  /** Retraso aditivo: entero de frames no negativo (ver `AnimationOptions.delay`). Por defecto, 0. */
   readonly delay?: number;
 };
 

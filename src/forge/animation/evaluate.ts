@@ -1,5 +1,6 @@
 import { useCurrentFrame } from "remotion";
 import type { NodeProps, Vec2 } from "../core/types";
+import { assertFrames } from "../timing/time";
 import { evaluateTrack, type Track } from "./keyframes";
 
 /** Propiedades numéricas de NodeProps que se pueden animar con un Track. */
@@ -35,7 +36,9 @@ export type AnimationOptions = {
   /**
    * Retraso en frames, ADITIVO: cada keyframe actúa `delay` frames más tarde de lo que dice
    * su `frame`. Antes de empezar, la animación mantiene el valor de su primer keyframe.
-   * Se suma al desplazamiento de cualquier <At>/<Sequence> contenedor. Por defecto, 0.
+   * Se suma al desplazamiento de cualquier <At>/<Sequence> contenedor.
+   * Debe ser un entero no negativo (como el resto de duraciones y offsets en frames);
+   * cualquier otro valor lanza un RangeError. Por defecto, 0.
    */
   readonly delay?: number;
 };
@@ -46,9 +49,7 @@ export const evaluateAnimation = (
   frame: number,
   { delay = 0 }: AnimationOptions = {},
 ): AnimatedProps => {
-  if (!Number.isFinite(delay)) {
-    throw new RangeError(`El delay de una animación debe ser un número finito de frames (recibido ${delay}).`);
-  }
+  assertFrames("El delay de una animación", delay);
   const local = frame - delay;
   const out: AnimatedProps = {};
   for (const key of NUMERIC_KEYS) {
