@@ -8,4 +8,5 @@ export { Group, Layer, type GroupProps, type LayerProps } from "./scene/Group";
 export { useStage, type StageBounds } from "./scene/stage-context";
 export { Clip, Mask, type ClipProps, type MaskProps, type MaskRegion } from "./masking/Masking";
 export * from "./animation";
+export * from "./timing";
 export * from "./camera";

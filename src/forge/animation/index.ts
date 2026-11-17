@@ -18,6 +18,7 @@ export {
   evaluateAnimation,
   useAnimation,
   type AnimatedProps,
+  type AnimationOptions,
   type AnimationSpec,
 } from "./evaluate";
 export { Animate, type AnimateProps } from "./Animate";

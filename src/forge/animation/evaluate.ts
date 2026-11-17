@@ -30,20 +30,39 @@ export type AnimatedProps = {
   -readonly [K in NumericKey | "scale"]?: NodeProps[K];
 };
 
+/** Opciones de evaluación (Fase 2C). Sin opciones, el comportamiento es el de la Fase 2A. */
+export type AnimationOptions = {
+  /**
+   * Retraso en frames, ADITIVO: cada keyframe actúa `delay` frames más tarde de lo que dice
+   * su `frame`. Antes de empezar, la animación mantiene el valor de su primer keyframe.
+   * Se suma al desplazamiento de cualquier <At>/<Sequence> contenedor. Por defecto, 0.
+   */
+  readonly delay?: number;
+};
+
 /** Evalúa todos los tracks en `frame`. Función pura: no depende de React ni de Remotion. */
-export const evaluateAnimation = (spec: AnimationSpec, frame: number): AnimatedProps => {
+export const evaluateAnimation = (
+  spec: AnimationSpec,
+  frame: number,
+  { delay = 0 }: AnimationOptions = {},
+): AnimatedProps => {
+  if (!Number.isFinite(delay)) {
+    throw new RangeError(`El delay de una animación debe ser un número finito de frames (recibido ${delay}).`);
+  }
+  const local = frame - delay;
   const out: AnimatedProps = {};
   for (const key of NUMERIC_KEYS) {
     const track = spec[key];
-    if (track) out[key] = evaluateTrack(track, frame);
+    if (track) out[key] = evaluateTrack(track, local);
   }
-  if (spec.scale) out.scale = evaluateTrack(spec.scale, frame);
+  if (spec.scale) out.scale = evaluateTrack(spec.scale, local);
   return out;
 };
 
 /**
  * Evalúa la animación con el frame actual de Remotion (relativo a la <Sequence> más cercana).
  * Uso: `<Circle radius={40} {...useAnimation({ x: tween(0, 30, 0, 200, "ease-out") })} />`
+ * Con retraso: `useAnimation(spec, { delay: 12 })`.
  */
-export const useAnimation = (spec: AnimationSpec): AnimatedProps =>
-  evaluateAnimation(spec, useCurrentFrame());
+export const useAnimation = (spec: AnimationSpec, options?: AnimationOptions): AnimatedProps =>
+  evaluateAnimation(spec, useCurrentFrame(), options);

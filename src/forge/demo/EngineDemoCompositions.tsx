@@ -3,6 +3,7 @@ import { Composition, Folder } from "remotion";
 import { AnimationDemo } from "./AnimationDemo";
 import { CameraDemo } from "./CameraDemo";
 import { EngineDemo } from "./EngineDemo";
+import { ORCHESTRATION_DEMO_FRAMES, OrchestrationDemo } from "./OrchestrationDemo";
 
 const FORMATS = [
   { id: "16x9", width: 1920, height: 1080 },
@@ -35,6 +36,14 @@ export const EngineDemoCompositions: FC = () => (
           id={`ForgeCameraDemo-${id}`}
           component={CameraDemo}
           durationInFrames={240}
+          fps={30}
+          width={width}
+          height={height}
+        />
+        <Composition
+          id={`ForgeOrchestrationDemo-${id}`}
+          component={OrchestrationDemo}
+          durationInFrames={ORCHESTRATION_DEMO_FRAMES}
           fps={30}
           width={width}
           height={height}
