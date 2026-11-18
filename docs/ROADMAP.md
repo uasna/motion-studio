@@ -27,7 +27,7 @@ Status: COMPLETE
 - Camera-aware masking.
 
 ## Phase 2C — Temporal orchestration
-Status: COMPLETE (approved by Technical Direction at commit `ac8996d`; branch `phase-2c-review`, not yet merged into `main`)
+Status: COMPLETE (approved by Technical Direction at commit `ac8996d`; integrated into `main` at `f295539`, together with the visual polish of the orchestration demonstration)
 
 - Pure timing planner.
 - Sequential and parallel blocks.
@@ -36,7 +36,7 @@ Status: COMPLETE (approved by Technical Direction at commit `ac8996d`; branch `p
 - Animation delays (non-negative integer frames).
 - Timeline span wrappers (`<At>`).
 - Camera and object synchronization (`cameraMoves`).
-- Orchestration demonstration in landscape, portrait and square.
+- Orchestration demonstration in landscape, portrait and square, with visual polish by Claude 2 (PR #1, `d989653`).
 
 Known pending tests:
 - `<Stagger persist={false}>`.
