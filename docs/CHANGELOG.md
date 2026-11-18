@@ -34,7 +34,7 @@ All notable project changes are documented here.
 
 ## Phase 2C — Temporal orchestration
 
-Date: 2026-11-17. Approved by Technical Direction at commit `ac8996d` (branch `phase-2c-review`, not yet merged into `main`).
+Date: 2026-11-17. Approved by Technical Direction at commit `ac8996d` (branch `phase-2c-review`). Integrated into `main`; the current integrated state is `f295539` (see "Phase 2C — Visual polish" below).
 
 Features added:
 - Pure temporal planner: `sec`, `step`, `gap`, `sequence`, `parallel`, `stagger`, `steps` and `plan`.
@@ -64,6 +64,23 @@ Validation:
 Known pending tests:
 - `<Stagger persist={false}>`.
 - `<Camera>` inside an `<At>` with a time reference different from the plan's origin.
+
+Phase 3 is not authorized.
+
+## Phase 2C — Visual polish
+
+Date: 2026-11-17. Integrated into `main` through PR #1 (`phase-2c-visual-polish`), merge commit `f295539`.
+
+Changes:
+- `d989653`, "polish Phase 2C orchestration demo", prepared by Claude 2 (Animation & Polish Department).
+- Only `src/forge/demo/OrchestrationDemo.tsx` was modified (346 insertions, 64 deletions). No engine code, tests, package files, dependencies or configuration were changed.
+- Adaptive layout for 16:9, 9:16 and 1:1 (in 9:16 the pipeline runs top to bottom), reserved text and HUD bands, screen-space captions and HUD labels outside `<Camera>`, camera shots framed in the free band with `frameRect` and `cameraMoves`, and adjusted plan gaps.
+
+Validation (reported by the project owner):
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- Remotion Studio: verified by the user.
+- MP4 renders completed successfully: 16:9 (1.7 MB), 9:16 (1.6 MB), 1:1 (1.3 MB).
 
 Phase 3 is not authorized.
 

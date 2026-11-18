@@ -8,15 +8,15 @@ The current validated baseline includes:
 - Phase 1: Engine foundation — complete.
 - Phase 2A: Keyframes and easing — complete.
 - Phase 2B: 2D camera — complete.
-- Phase 2C: Temporal orchestration — complete, approved by Technical Direction at commit `ac8996d`.
+- Phase 2C: Temporal orchestration — complete, approved by Technical Direction at commit `ac8996d`, integrated into `main`, with the visual polish of its demonstration also integrated.
 
 Phase 3 is not authorized and has not been started.
 
 ## Current repository
 
 - Repository: https://github.com/uasna/motion-studio
-- Branch `main`: Phase 2B baseline plus shared documentation (`48d19a8`). Phase 2C has not been merged into it.
-- Branch `phase-2c-review`: approved Phase 2C implementation (`ac8996d`) plus this documentation update.
+- Branch `main`: current integrated state is `f295539` (merge of PR #1, `phase-2c-visual-polish`). It contains the approved Phase 2C implementation (`ac8996d`), its approval documentation (`77aff6b`) and the visual polish of the orchestration demonstration (`d989653`).
+- Branch `phase-2c-review`: approved Phase 2C implementation and documentation; its head is `77aff6b`, which is an ancestor of `main`.
 - Local path: C:\Projects\Motion-Studio
 
 ## Phase 2C validation (commit `ac8996d`)
@@ -34,6 +34,29 @@ Recorded at Technical Direction approval and not re-executed by the Engine Depar
 - Remotion Studio, `OrchestrationDemo` in the three proportions.
 - MP4 render.
 - Regression of the Engine, Animation and Camera demos and of Identity001.
+
+The Studio and MP4 items above are superseded for `OrchestrationDemo` by the validation of the visual polish recorded below. The regression of the Engine, Animation and Camera demos and of Identity001 was not re-executed.
+
+## Phase 2C visual polish (PR #1, integrated at `f295539`)
+
+Prepared by Claude 2 (Animation & Polish Department) on branch `phase-2c-visual-polish` and merged into `main` through PR #1.
+
+- Commit `d989653`, "polish Phase 2C orchestration demo". Merge commit `f295539`.
+- The change modified only `src/forge/demo/OrchestrationDemo.tsx`. No engine code, tests, package files, dependencies or configuration were changed.
+- Polish applied to the demonstration:
+  - Adaptive layout for 16:9, 9:16 and 1:1. In 9:16 the pipeline runs top to bottom.
+  - Bands reserved for text (top) and a timeline HUD (bottom); camera shots are framed inside the free band.
+  - Screen-space captions and HUD labels outside `<Camera>`, so they do not scale with zoom. They use a minimal local `<text>` label, because the engine has no text primitive.
+  - Camera shots rebuilt from the plan with `frameRect` and the same `cameraMoves` API; plan gaps adjusted so the final shot is held long enough to read.
+
+Validation of the polish (reported by the project owner):
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- Remotion Studio: verified by the user.
+- MP4 renders completed successfully:
+  - 16:9: 1.7 MB.
+  - 9:16: 1.6 MB.
+  - 1:1: 1.3 MB.
 
 ## Known pending tests
 
@@ -100,12 +123,11 @@ No development phase is currently authorized.
 Open items:
 - Phase 3 requires explicit authorization before any work starts.
 - The two known pending tests listed above.
-- Integration of `phase-2c-review` into `main` has not been performed.
 
 ## Important constraints
 
 - Do not start Phase 3 without explicit authorization.
 - Do not redesign the engine architecture unnecessarily.
 - Do not remove Identity001.
-- Phase 2C is implemented and approved on `phase-2c-review`.
+- Phase 2C is implemented, approved and integrated into `main` (`f295539`).
 - Inspect the current code before making changes.

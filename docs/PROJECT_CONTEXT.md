@@ -85,14 +85,14 @@ Main branch: `main`
 All three phases above were validated locally with ESLint, TypeScript, Remotion Studio and successful renders.
 
 ### Phase 2C — Temporal orchestration
-Complete. Approved by Technical Direction at commit `ac8996d` on branch `phase-2c-review`. It has not been merged into `main`.
+Complete. Approved by Technical Direction at commit `ac8996d` on branch `phase-2c-review` and integrated into `main`. The visual polish of its demonstration (`d989653`, by Claude 2) was merged through PR #1; the current integrated state is `f295539`.
 
 - Pure temporal planner, independent of React and Remotion: `sec`, `step`, `gap`, `sequence`, `parallel`, `stagger`, `steps` and `plan`. Time is expressed in whole frames. A negative `gap` inside a `sequence` creates an overlap.
 - Additive animation `delay` in `useAnimation`, `evaluateAnimation` and `<Animate delay>`. It must be a non-negative integer number of frames; any other value throws a `RangeError`. The default is 0.
 - `<At>`: makes content exist from a plan span or a frame. It uses `Sequence layout="none"` and `persist` is enabled by default.
 - `<Stagger>`: staggers the appearance of its direct children.
 - `cameraMoves`: turns camera moves anchored to plan spans into `<Camera animation>` tracks, so camera and objects share one temporal reference.
-- `OrchestrationDemo` in landscape, portrait and square.
+- `OrchestrationDemo` in landscape, portrait and square, with the visual polish merged in PR #1.
 - Reuses the Phase 2A keyframe and easing system and `getDurationInFrames()` from `src/studio/formats.ts`. No dependencies were added.
 
 Usage rules:
@@ -105,6 +105,13 @@ Known pending tests (no specific test exists yet):
 2. `<Camera>` placed inside an `<At>` whose time reference differs from the plan's origin.
 
 Phase 3 is not authorized and has not been started.
+
+## 5b. Project organization
+
+Work is split across three departments:
+- Claude 1 — Engine Department: architecture, internal systems, animation, camera and timeline.
+- Claude 2 — Animation & Polish Department: demonstrations, visual composition, visual tests and polish.
+- ChatGPT — Technical Direction: planning, technical contracts, coordination and review.
 
 ## 6. Development workflow
 
@@ -150,7 +157,7 @@ https://github.com/uasna/motion-studio
 - TypeScript: 5.9.3
 - `npm run lint`: passed at the latest local validation.
 - `npm run build`: passed at the latest local validation.
-- Phase 2C approved commit: `ac8996d`. The evidence and its sources are listed in `CURRENT_STATE.md`.
+- Phase 2C approved commit: `ac8996d`. Current integrated state of `main`: `f295539`. The evidence and its sources are listed in `CURRENT_STATE.md`.
 - Phase 3: not authorized.
 
 This document describes the project baseline. Always verify the current repository before implementation.
