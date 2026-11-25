@@ -88,7 +88,7 @@
         <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
       </marker>
     </defs>
-  </svg><div id="vis-container"><h2 class="sr-only">Revised Mining Run HUD mockups for PC and phone: left stats block with Speed, training multiplier or no trail, money, Mineral Index button, contextual carried-mineral slots, top-centre escape countdown and bar, message line, and reserved areas for rare-discovery announcements and tutorial hints.</h2>
+  </svg><div id="vis-container"><h2 class="sr-only">Revised Mining Run HUD mockups for PC and phone (mobile layout adapted to narrow landscape screens, with an automated overlap test across 13 viewport sizes): left stats block with Speed, training multiplier or no trail, money, Mineral Index button, contextual carried-mineral slots, top-centre escape countdown and bar, message line, and reserved areas for rare-discovery announcements and tutorial hints.</h2>
 <style>
 .f{position:relative;background:var(--bg-neutral);border-radius:12px;border:0.5px solid var(--border);overflow:hidden}
 .rz{position:absolute;border:1px dashed var(--border-stronger);border-radius:6px;color:var(--text-muted);font-size:11px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.2}
@@ -132,38 +132,127 @@
 <div class="p" style="left:12px;top:216px;width:50px;height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center"><i class="ti ti-book" aria-hidden="true" style="font-size:20px"></i><span style="font-size:11px">Index</span></div>
 <div class="p ctx car" style="left:72px;top:216px;width:96px;height:50px;display:flex;align-items:center;justify-content:center;gap:6px"><span class="slot s1" style="width:34px;height:34px;background:var(--bg-tint-yellow)"><i class="ti ti-diamond" aria-hidden="true"></i></span><span class="slot s2" style="width:34px;height:34px;border-style:dashed"></span></div>
 </div>
-<div class="cap">Phone, landscape (touch controls on)</div>
-<div class="f" style="height:300px">
-<div class="rz" style="left:0;top:0;right:0;height:30px;border-radius:0;border-width:0 0 1px 0">Roblox top bar and safe insets</div>
-<div class="rz" style="left:30px;bottom:16px;width:110px;height:110px;border-radius:50%">Thumbstick</div>
-<div class="rz" style="right:30px;bottom:22px;width:70px;height:70px;border-radius:50%">Jump</div>
-<div class="fut" style="right:12px;top:38px;width:110px;height:46px">Tutorial hints</div>
-<div class="p ctx esc" style="left:50%;transform:translateX(-50%);top:36px;width:170px"><div style="display:flex;align-items:center;justify-content:center;gap:6px;padding:3px 0 2px"><i class="ti ti-clock" aria-hidden="true" style="font-size:14px"></i><span class="t" style="font-size:19px;font-weight:500">0:30</span></div><div class="bar"><div class="b" style="width:100%"></div></div></div>
-<div class="p ctx" style="left:50%;transform:translateX(-50%);top:98px;width:200px;text-align:center;padding:3px 4px;font-size:11px">Zone 3 · Gold · Rec. Speed: <span style="color:var(--text-muted)">open</span></div>
-<div class="fut" style="left:50%;transform:translateX(-50%);top:128px;width:200px;height:24px">Rare-discovery announcements</div>
-<div class="p" style="left:14px;top:38px;width:150px">
-<div class="row" style="padding:3px 6px"><i class="ti ti-shoe" aria-hidden="true" style="font-size:15px;color:var(--text-accent)"></i><span class="v" style="font-size:14px">3.13B</span><span class="pill on tp">x16 TRAINING</span></div>
-<div class="row" style="padding:0 6px 3px"><i class="ti ti-cash" aria-hidden="true" style="font-size:15px;color:var(--text-success)"></i><span class="v" style="font-size:14px">1.25M</span></div>
+<div class="cap">Phone, landscape (touch controls on), drawn at true size in Roblox GUI points and scaled to fit</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 8px">
+<label for="dev" style="font-size:13px;color:var(--text-secondary)">Device</label>
+<select id="dev" style="max-width:320px"></select>
+<span id="devinfo" style="font-size:12px;color:var(--text-secondary)"></span>
 </div>
-<div class="p" style="left:172px;top:38px;width:46px;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center"><i class="ti ti-book" aria-hidden="true" style="font-size:18px"></i><span style="font-size:11px">Index</span></div>
-<div class="p ctx car" style="left:14px;top:98px;width:86px;height:44px;display:flex;align-items:center;justify-content:center;gap:5px"><span class="slot s1" style="width:30px;height:30px;background:var(--bg-tint-yellow)"><i class="ti ti-diamond" aria-hidden="true" style="font-size:14px"></i></span><span class="slot s2" style="width:30px;height:30px;border-style:dashed"></span></div>
-</div>
+<div id="mwrap" class="f" style="height:300px"><div id="mstage" style="position:absolute;left:0;top:0;transform-origin:0 0"></div></div>
+<div class="cap">Automated overlap test across landscape phone sizes (escape on, 2 minerals carried, trail equipped: every contextual element visible)</div>
+<table id="tests" style="width:100%;font-size:12px;border-collapse:collapse;table-layout:fixed">
+<colgroup><col style="width:44%"><col style="width:16%"><col style="width:12%"><col style="width:28%"></colgroup>
+<thead><tr style="text-align:left;color:var(--text-secondary)"><th style="padding:4px 0;font-weight:500">Device</th><th style="font-weight:500">Viewport</th><th style="font-weight:500">Result</th><th style="font-weight:500">Notes</th></tr></thead>
+<tbody></tbody>
+</table>
 <script>
 const $=s=>[...document.querySelectorAll(s)];
 let trail=true,esc=true,carry=1,left=30,T=30;
+
+/* Mobile layout, in Roblox GUI points. Assumptions (to verify in Studio's device emulator):
+   top bar GuiInset 58; notch insets per device; jump button 70 at (W-95, H-90) inside the safe area;
+   dynamic thumbstick touch zone = left 40% of the width, lower 2/3 of the height;
+   clear centre = 30% x 35% box around the character (x 35-65%, y 45-80%). */
+const TOP=58,M=8;
+const PRE=[
+ ['iPhone SE 1st gen',568,320,[0,0,0,0]],
+ ['Stress test: narrow with notch',600,320,[44,44,0,21]],
+ ['Android 16:9',640,360,[0,0,0,0]],
+ ['iPhone 6/7/8/SE 2-3',667,375,[0,0,0,0]],
+ ['Android 18:9 (720x360)',720,360,[0,0,0,0]],
+ ['Galaxy S8/S9 (740x360)',740,360,[0,0,0,0]],
+ ['Android 19.5:9 (780x360)',780,360,[0,0,0,0]],
+ ['Galaxy S20/S21 (800x360)',800,360,[0,0,0,0]],
+ ['iPhone X/XS/11 Pro',812,375,[44,44,0,21]],
+ ['iPhone 12/13/14',844,390,[47,47,0,21]],
+ ['iPhone XR/11',896,414,[48,48,0,21]],
+ ['Pixel 7 (915x412)',915,412,[0,0,0,0]],
+ ['iPhone 14 Pro Max',932,430,[59,59,0,21]]
+];
+function layout(W,H,ins){
+ const l=ins[0],r=ins[1],b=ins[3],y0=TOP+4,c=W/2,R={};
+ R.stats=[l+M,y0,150,50];
+ R.index=[l+M+156,y0,44,44];
+ R.carried=[l+M,y0+56,84,40];
+ R.hints=[W-r-M-100,y0,100,40];
+ const L1=R.index[0]+44+M,R1=R.hints[0]-M;
+ let tw=Math.min(190,2*Math.min(c-L1,R1-c)),tx,centred=true;
+ if(tw>=130){tx=c-tw/2}else{tw=Math.min(190,R1-L1);tx=L1+(R1-L1-tw)/2;centred=false}
+ R.timer=[tx,y0,tw,44];
+ const L2=R.carried[0]+84+M,R2=W-r-M,my=y0+56;
+ const mw=Math.min(300,2*Math.min(c-L2,R2-c));
+ R.message=[c-mw/2,my,mw,18];
+ const shared=H<360;
+ if(!shared)R.rare=[c-mw/2,my+22,mw,20];
+ return {R,centred,shared,res:{
+  topbar:[0,0,W,TOP],insL:[0,0,l,H],insR:[W-r,0,r,H],insB:[0,H-b,W,b],
+  jump:[W-r-95,H-b-90,70,70],stick:[l+20,H-b-90,70,70],
+  centre:[W*0.35,H*0.45,W*0.30,H*0.35],dyn:[0,H/3,W*0.4,H*2/3]}};
+}
+const hit=(a,b)=>a[0]<b[0]+b[2]&&b[0]<a[0]+a[2]&&a[1]<b[1]+b[3]&&b[1]<a[1]+a[3];
+function test(W,H,ins){
+ const {R,centred,shared,res}=layout(W,H,ins),f=[],names=Object.keys(R);
+ for(let i=0;i<names.length;i++)for(let j=i+1;j<names.length;j++)if(hit(R[names[i]],R[names[j]]))f.push(names[i]+' x '+names[j]);
+ for(const n of names){const a=R[n];
+  if(a[0]<0||a[1]<0||a[0]+a[2]>W||a[1]+a[3]>H)f.push(n+' off screen');
+  for(const z of ['topbar','insL','insR','insB','jump','stick','centre'])if(res[z][2]>0&&res[z][3]>0&&hit(a,res[z]))f.push(n+' x '+z);}
+ if(hit(R.index,res.dyn))f.push('index in thumbstick zone');
+ if(R.timer[2]<130)f.push('timer too narrow');
+ if(R.message[2]<200)f.push('message too narrow');
+ const notes=[];if(!centred)notes.push('timer shifted off-centre');if(shared)notes.push('rare shares message slot');
+ return {ok:f.length===0,f,notes,R,res};
+}
+function box(x,y,w,h,cls,html,st){return '<div class="'+cls+'" style="left:'+x+'px;top:'+y+'px;width:'+w+'px;height:'+h+'px;'+(st||'')+'">'+(html||'')+'</div>'}
+function renderMobile(){
+ const d=PRE[+document.getElementById('dev').value],[nm,W,H,ins]=d,t=test(W,H,ins),R=t.R,z=t.res;
+ document.getElementById('devinfo').textContent=W+' x '+H+' pt, safe insets L'+ins[0]+' R'+ins[1]+' B'+ins[3]+' · '+(t.ok?'no overlaps':'overlaps: '+t.f.join(', '));
+ let h='';
+ h+=box(z.dyn[0],z.dyn[1],z.dyn[2],z.dyn[3],'rz','<span style="position:absolute;top:4px;left:'+(ins[0]+6)+'px">Thumbstick touch zone</span>','border-color:var(--border);align-items:flex-start;justify-content:flex-start');
+ h+=box(0,0,W,TOP,'rz','Roblox top bar','border-radius:0;border-width:0 0 1px 0');
+ if(ins[0])h+=box(0,TOP,ins[0],H-TOP,'rz','','border-radius:0;background:var(--surface-0)');
+ if(ins[1])h+=box(W-ins[1],TOP,ins[1],H-TOP,'rz','','border-radius:0;background:var(--surface-0)');
+ if(ins[3])h+=box(0,H-ins[3],W,ins[3],'rz','','border-radius:0;border-width:1px 0 0 0');
+ h+=box(z.stick[0],z.stick[1],70,70,'rz','Stick','border-radius:50%');
+ h+=box(z.jump[0],z.jump[1],70,70,'rz','Jump','border-radius:50%');
+ h+=box(z.centre[0],z.centre[1],z.centre[2],z.centre[3],'rz','Centre kept clear','border-color:var(--border)');
+ h+=box(R.hints[0],R.hints[1],100,40,'fut','Tutorial hints');
+ h+=box(R.timer[0],R.timer[1],R.timer[2],44,'p ctx esc','<div style="display:flex;align-items:center;justify-content:center;gap:5px;padding:4px 0 3px;line-height:22px"><i class="ti ti-clock" aria-hidden="true" style="font-size:14px"></i><span class="t" style="font-size:19px;font-weight:500">0:30</span></div><div class="bar" style="margin:0 8px"><div class="b"></div></div>');
+ h+=box(R.message[0],R.message[1],R.message[2],18,'p ctx','<div style="font-size:11px;text-align:center;line-height:14px;white-space:nowrap;overflow:hidden">Zone 3 · Gold · Rec. Speed: <span style="color:var(--text-muted)">open</span></div>','border-width:1.5px');
+ if(R.rare)h+=box(R.rare[0],R.rare[1],R.rare[2],20,'fut','Rare-discovery announcements');
+ h+=box(R.stats[0],R.stats[1],150,50,'p','<div class="row" style="padding:3px 6px"><i class="ti ti-shoe" aria-hidden="true" style="font-size:15px;color:var(--text-accent)"></i><span class="v" style="font-size:14px">3.13B</span><span class="pill on tp">x16 TRAINING</span></div><div class="row" style="padding:0 6px 3px"><i class="ti ti-cash" aria-hidden="true" style="font-size:15px;color:var(--text-success)"></i><span class="v" style="font-size:14px">1.25M</span></div>','box-sizing:border-box');
+ h+=box(R.index[0],R.index[1],44,44,'p','<i class="ti ti-book" aria-hidden="true" style="font-size:18px"></i><span style="font-size:11px">Index</span>','display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box');
+ h+=box(R.carried[0],R.carried[1],84,40,'p ctx car','<span class="slot s1" style="width:28px;height:28px;background:var(--bg-tint-yellow)"><i class="ti ti-diamond" aria-hidden="true" style="font-size:14px"></i></span><span class="slot s2" style="width:28px;height:28px;border-style:dashed"></span>','display:flex;align-items:center;justify-content:center;gap:5px;box-sizing:border-box');
+ const st=document.getElementById('mstage'),wrap=document.getElementById('mwrap');
+ st.style.width=W+'px';st.style.height=H+'px';st.innerHTML=h;
+ const k=Math.min(1,wrap.clientWidth/W);st.style.transform='scale('+k+')';wrap.style.height=Math.round(H*k)+'px';
+ draw();
+}
+function runTests(){
+ const tb=document.querySelector('#tests tbody');let rows='';
+ PRE.forEach(([nm,W,H,ins])=>{const t=test(W,H,ins);
+  rows+='<tr style="border-top:0.5px solid var(--border)"><td style="padding:4px 0">'+nm+'</td><td>'+W+' x '+H+'</td><td style="color:'+(t.ok?'var(--text-success)':'var(--text-danger)')+'">'+(t.ok?'Pass':'Fail')+'</td><td style="color:var(--text-secondary)">'+(t.ok?(t.notes.join('; ')||'-'):t.f.join('; '))+'</td></tr>'});
+ tb.innerHTML=rows;
+}
 function draw(){
-$('.tp').forEach(p=>{p.textContent=trail?'x16 TRAINING':'NO TRAIL';p.className='pill tp '+(trail?'on':'off')});
-$('.esc').forEach(e=>e.style.visibility=esc?'visible':'hidden');
-$('.car').forEach(e=>e.style.visibility=carry>0?'visible':'hidden');
-$('.s2').forEach(s=>{s.style.borderStyle=carry>1?'solid':'dashed';s.style.background=carry>1?'var(--bg-tint-blue)':'transparent';s.innerHTML=carry>1?'<i class="ti ti-diamond" aria-hidden="true"></i>':''});
-$('.t').forEach(t=>t.textContent='0:'+String(Math.max(0,Math.round(left))).padStart(2,'0'));
-$('.b').forEach(b=>b.style.width=Math.round(left/T*100)+'%');
-document.getElementById('bt').textContent='Trail: '+(trail?'x16':'none');
-document.getElementById('be').textContent='Escape: '+(esc?'on':'off');
-document.getElementById('bc').textContent='Carrying: '+carry;}
+ $('.tp').forEach(p=>{p.textContent=trail?'x16 TRAINING':'NO TRAIL';p.className='pill tp '+(trail?'on':'off')});
+ $('.esc').forEach(e=>e.style.visibility=esc?'visible':'hidden');
+ $('.car').forEach(e=>e.style.visibility=carry>0?'visible':'hidden');
+ $('.s2').forEach(s=>{s.style.borderStyle=carry>1?'solid':'dashed';s.style.background=carry>1?'var(--bg-tint-blue)':'transparent';s.innerHTML=carry>1?'<i class="ti ti-diamond" aria-hidden="true"></i>':''});
+ $('.t').forEach(t=>t.textContent='0:'+String(Math.max(0,Math.round(left))).padStart(2,'0'));
+ $('.b').forEach(b=>b.style.width=Math.round(left/T*100)+'%');
+ document.getElementById('bt').textContent='Trail: '+(trail?'x16':'none');
+ document.getElementById('be').textContent='Escape: '+(esc?'on':'off');
+ document.getElementById('bc').textContent='Carrying: '+carry;
+}
+const sel=document.getElementById('dev');
+sel.innerHTML=PRE.map((p,i)=>'<option value="'+i+'">'+p[0]+' · '+p[1]+' x '+p[2]+'</option>').join('');
+sel.onchange=renderMobile;
+window.addEventListener('resize',renderMobile);
 setInterval(()=>{if(!esc)return;left-=1;if(left<0)left=T;draw()},1000);
 document.getElementById('bt').onclick=()=>{trail=!trail;draw()};
 document.getElementById('be').onclick=()=>{esc=!esc;left=T;draw()};
 document.getElementById('bc').onclick=()=>{carry=(carry+1)%3;draw()};
-draw();
-</script></div></body></html>
+renderMobile();runTests();
+</script>
+</div>
+</body></html>
